@@ -132,9 +132,9 @@ export function authorize(responseType, clientId, redirectUri, state,
 // 获取验证图片  以及token
 export function reqGet(data) {
   return request({
-    url: 'system/captcha/get',
+    url: '/system/captcha/get', // 修复：补充开头的/，保证URL路径正确
     method: 'get',
-    data
+    params: data // 修复：GET请求参数必须放在params中（POST用data）
   })
 }
 
@@ -142,8 +142,8 @@ export function reqGet(data) {
 export function reqCheck(data) {
   return request({
     url: '/system/captcha/check',
-    method: 'post',
-    data
+    method: 'get', // 修复：从post改为get，匹配后端接口方法
+    params: data // 修复：GET请求参数必须放在params中（POST用data）
   })
 }
 
