@@ -133,7 +133,7 @@ export function authorize(responseType, clientId, redirectUri, state,
 export function reqGet(data) {
   return request({
     url: 'system/captcha/get',
-    method: 'post',
+    method: 'get',
     data
   })
 }
