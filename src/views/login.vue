@@ -97,10 +97,6 @@
       </div>
     </div>
 
-    <!-- 图形验证码 -->
-    <Verify ref="verify" :captcha-type="'blockPuzzle'" :img-size="{width:'400px',height:'200px'}"
-            @success="handleLogin" />
-
     <!-- footer -->
     <div class="footer">
       Copyright © 2020-2022 iocoder.cn All Rights Reserved.
@@ -112,7 +108,7 @@
 import {sendSmsCode, socialAuthRedirect} from "@/api/login";
 import {getTenantIdByName} from "@/api/system/tenant";
 import {SystemUserSocialTypeEnum} from "@/utils/constants";
-import {getCaptchaEnable, getTenantEnable} from "@/utils/ruoyi";
+import {getTenantEnable} from "@/utils/ruoyi"; // 删掉了getCaptchaEnable
 import {
   getPassword,
   getRememberMe, getTenantName,
@@ -123,25 +119,24 @@ import {
   setUsername
 } from "@/utils/auth";
 
-import Verify from '@/components/Verifition/Verify';
-import {resetUserPwd} from "@/api/system/user";
+// 删掉了Verify组件的导入
 
 export default {
   name: "Login",
   components: {
-    Verify
+    // 删掉了Verify组件的注册
   },
   data() {
     return {
       codeUrl: "",
-      captchaEnable: true,
+      // 删掉了captchaEnable: true,
       tenantEnable: true,
       mobileCodeTimer: 0,
       loginForm: {
         loginType: "uname",
         username: "admin",
         password: "admin123",
-        captchaVerification: "",
+        // 删掉了captchaVerification: "",
         mobile: "",
         mobileCode: "",
         rememberMe: false,
@@ -205,23 +200,15 @@ export default {
         }
       });
     }
-    // 验证码开关
-    this.captchaEnable = getCaptchaEnable();
+    // 删掉了验证码开关的代码：this.captchaEnable = getCaptchaEnable();
     // 重定向地址
     this.redirect = this.$route.query.redirect ? decodeURIComponent(this.$route.query.redirect) : undefined;
     this.getCookie();
   },
   methods: {
     getCode() {
-      // 情况一，未开启：则直接登录
-      if (!this.captchaEnable) {
-        this.handleLogin({})
-        return;
-      }
-
-      // 情况二，已开启：则展示验证码；只有完成验证码的情况，才进行登录
-      // 弹出验证码
-      this.$refs.verify.show()
+      // 删掉了验证码的判断逻辑，直接调用登录
+      this.handleLogin({})
     },
     getCookie() {
       const username = getUsername();
@@ -252,7 +239,7 @@ export default {
             removeRememberMe()
             removeTenantName()
           }
-          this.loginForm.captchaVerification = captchaParams.captchaVerification
+          // 删掉了和captchaVerification相关的代码
           // 发起登陆
           // console.log("发起登录", this.loginForm);
           this.$store.dispatch(this.loginForm.loginType === "sms" ? "SmsLogin" : "Login", this.loginForm).then(() => {
