@@ -294,7 +294,7 @@ export default {
       if (this.mobileCodeTimer > 0) return;
       this.$refs.loginForm.validate(valid => {
         if (!valid) return;
-        sendSmsCode(this.loginForm.mobile, this.scene, this.loginForm.uuid, this.loginForm.code).then(res => {
+        sendSmsCode(this.loginForm.mobile, this.scene).then(res => {
           this.$modal.msgSuccess("获取验证码成功")
           this.mobileCodeTimer = 60;
           let msgTimer = setInterval(() => {
