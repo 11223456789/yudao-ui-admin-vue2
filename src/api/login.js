@@ -1,14 +1,12 @@
 import request from '@/utils/request'
 import { getRefreshToken } from '@/utils/auth'
-import service from '@/utils/request'
 
-// 登录方法
-export function login(username, password, captchaVerification, socialType, socialCode, socialState) {
+// 登录方法（已删除验证码/滑块验证参数）
+export function login(username, password, socialType, socialCode, socialState) {
   const data = {
     username,
     password,
-    captchaVerification,
-    // 社交相关
+    // 社交相关（保留，不影响登录）
     socialType,
     socialCode,
     socialState
@@ -60,7 +58,7 @@ export function socialLogin(type, code, state) {
   })
 }
 
-// 获取登录验证码
+// 获取登录验证码（短信验证码，保留，不影响账号密码登录）
 export function sendSmsCode(mobile, scene) {
   return request({
     url: '/system/auth/send-sms-code',
@@ -72,7 +70,7 @@ export function sendSmsCode(mobile, scene) {
   })
 }
 
-// 短信验证码登录
+// 短信验证码登录（保留，不影响账号密码登录）
 export function smsLogin(mobile, code) {
   return request({
     url: '/system/auth/sms-login',
@@ -86,14 +84,13 @@ export function smsLogin(mobile, code) {
 
 // 刷新访问令牌
 export function refreshToken() {
-  return service({
+  return request({
     url: '/system/auth/refresh-token?refreshToken=' + getRefreshToken(),
     method: 'post'
   })
 }
 
 // ========== OAUTH 2.0 相关 ==========
-
 export function getAuthorize(clientId) {
   return request({
     url: '/system/oauth2/authorize?clientId=' + clientId,
@@ -112,7 +109,7 @@ export function authorize(responseType, clientId, redirectUri, state,
     scopes[scope] = false
   }
   // 发起请求
-  return service({
+  return request({
     url: '/system/oauth2/authorize',
     headers: {
       'Content-type': 'application/x-www-form-urlencoded'
@@ -127,25 +124,4 @@ export function authorize(responseType, clientId, redirectUri, state,
     },
     method: 'post'
   })
-}
-
-// 获取验证图片  以及token
-export function reqGet(data) {
-  return request({
-    url: '/system/captcha/get', // 修复：补充开头的/，保证URL路径正确
-    method: 'get',
-    params: data // 修复：GET请求参数必须放在params中（POST用data）
-  })
-}
-
-// 滑动或者点选验证
-export function reqCheck(data) {
-  return request({
-    url: '/system/captcha/check',
-    method: 'get', // 修复：从post改为get，匹配后端接口方法
-    params: data // 修复：GET请求参数必须放在params中（POST用data）
-  })
-}
-
-export class socialBindLogin {
 }
